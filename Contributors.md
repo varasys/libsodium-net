@@ -6,3 +6,4 @@ Those listed below have contributed to `libsodium-net`, and are the copyright ho
  * Jestin Stoffel <jestin.stoffel@gmail.com>
  * Rodrigo Fraga <rodrigo.fraga@gmail.com>
  * Christian Hermann <c.hermann@bitbeans.de>
+ * Henrik Steffen Gaßmann <henrik@gassmann.onl>

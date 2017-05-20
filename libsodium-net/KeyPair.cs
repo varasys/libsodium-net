@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Security.Cryptography;
 using Sodium.Exceptions;
 
 namespace Sodium
 {
   /// <summary>A public / private key pair.</summary>
-  public class KeyPair : IDisposable
+  public partial class KeyPair : IDisposable
   {
     private readonly byte[] _publicKey;
     private readonly byte[] _privateKey;
@@ -58,16 +58,24 @@ namespace Sodium
         Array.Clear(_privateKey, 0, _privateKey.Length);
     }
 
-    private void _ProtectKey()
+    partial void _ProtectKey();
+    partial void _UnprotectKey();
+  }
+
+#if NET46
+  public partial class KeyPair
+  {
+    partial void _ProtectKey()
     {
       if (!SodiumLibrary.IsRunningOnMono)
         ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.SameProcess);
     }
 
-    private void _UnprotectKey()
+    partial void _UnprotectKey()
     {
       if (!SodiumLibrary.IsRunningOnMono)
         ProtectedMemory.Unprotect(_privateKey, MemoryProtectionScope.SameProcess);
     }
   }
+#endif
 }

@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Sodium
@@ -40,6 +41,12 @@ namespace Sodium
 
         return lib;
       }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static void Copy(Array sourceArray, long sourceIndex, Array destinationArray, long destinationIndex, long length)
+    {
+      Array.Copy(sourceArray, sourceIndex, destinationArray, destinationIndex, length);
     }
 
     //init
@@ -379,16 +386,16 @@ namespace Sodium
     //crypto_generichash_init
     internal delegate int _HashInit(IntPtr state, byte[] key, int keySize, int hashSize);
     internal static LazyInvoke<_HashInit> _hash_init = new LazyInvoke<_HashInit>("crypto_generichash_init", SodiumLibrary.Name);
-    internal static _HashInit hash_init { get { return _hash_init.Method; } }
+    internal static _HashInit crypto_generichash_init { get { return _hash_init.Method; } }
 
     //crypto_generichash_update
     internal delegate int _HashUpdate(IntPtr state, byte[] message, long messageLength);
     internal static LazyInvoke<_HashUpdate> _hash_update = new LazyInvoke<_HashUpdate>("crypto_generichash_update", SodiumLibrary.Name);
-    internal static _HashUpdate hash_update { get { return _hash_update.Method; } }
+    internal static _HashUpdate crypto_generichash_update { get { return _hash_update.Method; } }
 
     //crypto_generichash_final
     internal delegate int _HashFinal(IntPtr state, byte[] buffer, int bufferLength);
     internal static LazyInvoke<_HashFinal> _hash_final = new LazyInvoke<_HashFinal>("crypto_generichash_final", SodiumLibrary.Name);
-    internal static _HashFinal hash_final { get { return _hash_final.Method; } }
+    internal static _HashFinal crypto_generichash_final { get { return _hash_final.Method; } }
   }
 }

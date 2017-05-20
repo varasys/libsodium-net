@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using Sodium.Exceptions;
 
@@ -8,7 +8,7 @@ namespace Sodium
   public class PasswordHash
   {
     /// <summary>
-    /// Is an identifier for the algorithm to use and should 
+    /// Is an identifier for the algorithm to use and should
     /// be currently set to crypto_pwhash_ALG_DEFAULT.
     /// </summary>
     private const int ARGON_ALGORITHM_DEFAULT = 1;
@@ -27,7 +27,7 @@ namespace Sodium
     private const uint SCRYPT_SALSA208_SHA256_SALTBYTES = 32U;
 
     private const long SCRYPT_OPSLIMIT_INTERACTIVE = 524288;
-    private const long SCRYPT_OPSLIMIT_MODERATE =   8388608; 
+    private const long SCRYPT_OPSLIMIT_MODERATE =   8388608;
     private const long SCRYPT_OPSLIMIT_MEDIUM =     8388608;
     private const long SCRYPT_OPSLIMIT_SENSITIVE = 33554432;
 
@@ -131,7 +131,7 @@ namespace Sodium
       var buffer = new byte[outputLength];
 
       SodiumCore.Init();
-      var ret = SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit, ARGON_ALGORITHM_DEFAULT);
+      var ret = SodiumLibrary.crypto_pwhash(buffer, buffer.Length, password, password.GetLongLength(0), salt, opsLimit, memLimit, ARGON_ALGORITHM_DEFAULT);
 
       if (ret != 0)
         throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
@@ -271,7 +271,7 @@ namespace Sodium
       var pass = Encoding.UTF8.GetBytes(password);
 
       SodiumCore.Init();
-      var ret = SodiumLibrary.crypto_pwhash_str(buffer, pass, pass.LongLength, opsLimit, memLimit);
+      var ret = SodiumLibrary.crypto_pwhash_str(buffer, pass, pass.GetLongLength(0), opsLimit, memLimit);
 
       if (ret != 0)
       {
@@ -303,7 +303,7 @@ namespace Sodium
       if (hash == null)
         throw new ArgumentNullException("hash", "Hash cannot be null");
 
-      var ret = SodiumLibrary.crypto_pwhash_str_verify(hash, password, password.LongLength);
+      var ret = SodiumLibrary.crypto_pwhash_str_verify(hash, password, password.GetLongLength(0));
 
       return ret == 0;
     }
@@ -326,7 +326,9 @@ namespace Sodium
           opsLimit = SCRYPT_OPSLIMIT_INTERACTIVE;
           memLimit = SCRYPT_MEMLIMIT_INTERACTIVE;
           break;
+#pragma warning disable 618
         case Strength.Moderate:
+#pragma warning restore 618
           opsLimit = SCRYPT_OPSLIMIT_MODERATE;
           memLimit = SCRYPT_MEMLIMIT_MODERATE;
           break;
@@ -375,7 +377,7 @@ namespace Sodium
       var pass = Encoding.UTF8.GetBytes(password);
 
       SodiumCore.Init();
-      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.LongLength, opsLimit, memLimit);
+      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str(buffer, pass, pass.GetLongLength(0), opsLimit, memLimit);
 
       if (ret != 0)
       {
@@ -421,7 +423,9 @@ namespace Sodium
           opsLimit = SCRYPT_OPSLIMIT_INTERACTIVE;
           memLimit = SCRYPT_MEMLIMIT_INTERACTIVE;
           break;
+#pragma warning disable 618
         case Strength.Moderate:
+#pragma warning restore 618
           opsLimit = SCRYPT_OPSLIMIT_MODERATE;
           memLimit = SCRYPT_MEMLIMIT_MODERATE;
           break;
@@ -504,7 +508,7 @@ namespace Sodium
       var buffer = new byte[outputLength];
 
       SodiumCore.Init();
-      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.LongLength, salt, opsLimit, memLimit);
+      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256(buffer, buffer.Length, password, password.GetLongLength(0), salt, opsLimit, memLimit);
 
       if (ret != 0)
         throw new OutOfMemoryException("Internal error, hash failed (usually because the operating system refused to allocate the amount of requested memory).");
@@ -534,7 +538,7 @@ namespace Sodium
       if (hash == null)
         throw new ArgumentNullException("hash", "Hash cannot be null");
 
-      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(hash, password, password.LongLength);
+      var ret = SodiumLibrary.crypto_pwhash_scryptsalsa208sha256_str_verify(hash, password, password.GetLongLength(0));
 
       return ret == 0;
     }
