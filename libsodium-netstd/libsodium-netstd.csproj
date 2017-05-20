@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Sodium</AssemblyName>
+    <RootNamespace>Sodium</RootNamespace>
+    <PackageId>libsodium-netstd</PackageId>
+    <Product>libsodium-netstd</Product>
+    <Version>1.0.12-preview-1</Version>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <FileVersion>0.1.0.0</FileVersion>
+    <Authors>Adam Caudill</Authors>
+    <LicenseUrl>https://raw.githubusercontent.com/adamcaudill/libsodium-net/master/LICENSE</LicenseUrl>
+    <ProjectUrl>https://github.com/adamcaudill/libsodium-net</ProjectUrl>
+    <RequireLicenseAcceptance>true</RequireLicenseAcceptance>
+    <Description>A secure cryptographic library</Description>
+    <Copyright>Copyright (c) 2013 - 2016 Adam Caudill &amp; Contributors</Copyright>
+    <Tags>encryption libsodium XSalsa20 Curve25519 Ed25519 Poly1305 NaCl AES GCM scrypt Argon Argon2 password hash</Tags>
+    <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\libsodium-net\*.cs" Exclude="..\libsodium-net\DynamicInvoke.cs;..\libsodium-net\LazyInvoke.cs;..\libsodium-net\SodiumCore.cs;..\libsodium-net\SodiumLibrary.cs" />
+    <Compile Include="..\libsodium-net\Exceptions\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+    <PackageReference Include="libsodium" Version="1.0.12" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net46'">
+    <Reference Include="System.Security" />
+  </ItemGroup>
+</Project>
