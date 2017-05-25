@@ -26,4 +26,10 @@
   <ItemGroup Condition="'$(TargetFramework)'=='net46'">
     <Reference Include="System.Security" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net46'">
+    <None Include="Sodium.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
