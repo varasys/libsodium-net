@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 namespace Sodium
 {
@@ -7,11 +8,9 @@ namespace Sodium
   /// </summary>
   public static class SodiumCore
   {
-    private static bool _isInit;
-
     static SodiumCore()
     {
-      Init();
+      RuntimeHelpers.RunClassConstructor(typeof(SodiumLibrary).TypeHandle);
     }
 
     /// <summary>Gets random bytes</summary>
@@ -20,7 +19,7 @@ namespace Sodium
     public static byte[] GetRandomBytes(int count)
     {
       var buffer = new byte[count];
-      SodiumLibrary.randombytes_buff(buffer, count);
+      SodiumLibrary.randombytes_buf(buffer, count);
 
       return buffer;
     }
@@ -33,7 +32,7 @@ namespace Sodium
     public static int GetRandomNumber(int upperBound)
     {
       var randomNumber = SodiumLibrary.randombytes_uniform(upperBound);
-    
+
       return randomNumber;
     }
 
@@ -54,11 +53,6 @@ namespace Sodium
     /// <remarks>This only needs to be done once, so this prevents repeated calls.</remarks>
     public static void Init()
     {
-      if (!_isInit)
-      {
-        SodiumLibrary.init();
-        _isInit = true;
-      }
     }
   }
 }

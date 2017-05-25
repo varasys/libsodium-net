@@ -3,11 +3,11 @@
   <PropertyGroup>
     <AssemblyName>Sodium</AssemblyName>
     <RootNamespace>Sodium</RootNamespace>
-    <PackageId>libsodium-netstd</PackageId>
-    <Product>libsodium-netstd</Product>
+    <PackageId>libsodium-net</PackageId>
+    <Product>libsodium-net</Product>
     <Version>1.0.12-preview-1</Version>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.0.0</FileVersion>
+    <AssemblyVersion>0.12.0.0</AssemblyVersion>
+    <FileVersion>0.12.0.0</FileVersion>
     <Authors>Adam Caudill</Authors>
     <LicenseUrl>https://raw.githubusercontent.com/adamcaudill/libsodium-net/master/LICENSE</LicenseUrl>
     <ProjectUrl>https://github.com/adamcaudill/libsodium-net</ProjectUrl>
@@ -17,11 +17,6 @@
     <Tags>encryption libsodium XSalsa20 Curve25519 Ed25519 Poly1305 NaCl AES GCM scrypt Argon Argon2 password hash</Tags>
     <TargetFrameworks>netstandard1.3;net46</TargetFrameworks>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\libsodium-net\*.cs" Exclude="..\libsodium-net\DynamicInvoke.cs;..\libsodium-net\LazyInvoke.cs;..\libsodium-net\SodiumCore.cs;..\libsodium-net\SodiumLibrary.cs" />
-    <Compile Include="..\libsodium-net\Exceptions\*.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
