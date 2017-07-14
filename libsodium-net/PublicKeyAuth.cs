@@ -2,6 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 using Sodium.Exceptions;
+using Sodium.Interop;
 
 namespace Sodium
 {
@@ -73,7 +74,7 @@ namespace Sodium
       SodiumLibrary.crypto_sign(buffer, ref bufferLength, message, message.Length, key);
 
       var final = new byte[bufferLength];
-      SodiumLibrary.Copy(buffer, 0, final, 0, bufferLength);
+      RuntimeShim.Copy(buffer, 0, final, 0, bufferLength);
 
       return final;
     }
@@ -100,7 +101,7 @@ namespace Sodium
         throw new CryptographicException("Failed to verify signature.");
 
       var final = new byte[bufferLength];
-      SodiumLibrary.Copy(buffer, 0, final, 0, bufferLength);
+      RuntimeShim.Copy(buffer, 0, final, 0, bufferLength);
 
       return final;
     }

@@ -3,6 +3,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Security.Cryptography;
+using Sodium.Interop;
 
 namespace Sodium
 {

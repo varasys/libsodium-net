@@ -2,31 +2,20 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Sodium
+namespace Sodium.Interop
 {
   internal static class SodiumLibrary
   {
-    internal const string Name = "libsodium";
-    internal static readonly bool IsRunningOnMono
-      = Type.GetType("Mono.Runtime") != null;
+    private const string Name = SodiumRuntimeConfig.LibraryName;
 
     static SodiumLibrary()
     {
       RuntimeShim.PinDllImportLibrary(Name);
       sodium_init();
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal static void Copy(Array sourceArray, long sourceIndex, Array destinationArray, long destinationIndex, long length)
-    {
-#if NETSTANDARD1_3
-      Array.Copy(sourceArray, (int)sourceIndex, destinationArray, (int)destinationIndex, (int)length);
-#else
-      Array.Copy(sourceArray, sourceIndex, destinationArray, destinationIndex, length);
-#endif
     }
 
     [DllImport(Name, CallingConvention = CallingConvention.Cdecl)]

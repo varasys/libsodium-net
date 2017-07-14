@@ -1,38 +1,22 @@
 using System;
+using System.Diagnostics;
 using System.IO;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 
-namespace Sodium
+namespace Sodium.Interop
 {
   internal static class RuntimeShim
   {
-#pragma warning disable 414
-    private static readonly string ArchitectureDirectory;
-#pragma warning restore 414
-
-    static RuntimeShim()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static void Copy(Array sourceArray, long sourceIndex, Array destinationArray, long destinationIndex, long length)
     {
-      switch (RuntimeInformation.ProcessArchitecture)
-      {
-        case Architecture.X86:
-          ArchitectureDirectory = "x86";
-          break;
-        case Architecture.X64:
-          ArchitectureDirectory = "x64";
-          break;
-        case Architecture.Arm:
-          ArchitectureDirectory = "arm";
-          break;
-        case Architecture.Arm64:
-          ArchitectureDirectory = "arm64";
-          break;
-
-        default:
-          throw new ArgumentOutOfRangeException();
-      }
+#if NETSTANDARD1_3
+      Array.Copy(sourceArray, (int)sourceIndex, destinationArray, (int)destinationIndex, (int)length);
+#else
+      Array.Copy(sourceArray, sourceIndex, destinationArray, destinationIndex, length);
+#endif
     }
 
 #if NETSTANDARD1_3
@@ -43,6 +27,29 @@ namespace Sodium
     }
 #endif
 
+    [Conditional("NET46")]
+    internal static void ProtectMemory(byte[] data)
+    {
+#if NET46
+      if (!SodiumRuntimeConfig.IsRunningOnMono)
+      {
+        ProtectedMemory.Protect(data, MemoryProtectionScope.SameProcess);
+      }
+#endif
+    }
+
+    [Conditional("NET46")]
+    internal static void UnprotectMemory(byte[] data)
+    {
+#if NET46
+      if (!SodiumRuntimeConfig.IsRunningOnMono)
+      {
+        ProtectedMemory.Unprotect(data, MemoryProtectionScope.SameProcess);
+      }
+#endif
+    }
+
+    [Conditional("NET46")]
     internal static void PinDllImportLibrary(string library)
     {
 #if NET46
@@ -68,7 +75,7 @@ namespace Sodium
         {
           return;
         }
-        dllPath = Path.Combine(appDirectory, ArchitectureDirectory, library);
+        dllPath = Path.Combine(appDirectory, SodiumRuntimeConfig.ArchitectureDirectory, library);
       }
       else
       {

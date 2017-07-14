@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using Sodium.Exceptions;
+using Sodium.Interop;
 
 namespace Sodium
 {
