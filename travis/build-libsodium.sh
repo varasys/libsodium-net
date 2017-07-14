@@ -1,6 +1,8 @@
 #!/bin/bash
 set -ev
 
+if [[ "$CFG" == "CORE" ]]; then exit 0; fi
+
 git clone git://github.com/jedisct1/libsodium.git
 cd libsodium
 git checkout tags/1.0.12

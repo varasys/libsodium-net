@@ -10,14 +10,13 @@ matrix:
       dist: trusty
       os:
       - linux
-      - osx
       env:
       - CFG=CORE
       - TRAVIS_OS_UNAME=$(uname -s)
-    - mono: 5.0
+    - mono: latest
+      sudo: required
       os:
       - linux
-      - osx
       env:
       - CFG=MONO
       - TRAVIS_OS_UNAME=$(uname -s)
@@ -29,7 +28,8 @@ matrix:
       env:
       - CFG=CORE
       - TRAVIS_OS_UNAME=$(uname -s)
-    - mono: 5.0
+    - mono: latest
+      sudo: required
       os:
       - osx
       env:
@@ -40,7 +40,7 @@ install:
  - ./travis/install.sh
 
 before_script:
- - if [ "$TEST" -eq "MONO" ] then ./travis/build-libsodium.sh fi
+ - ./travis/build-libsodium.sh
 
 script:
  - ./travis/build.sh
