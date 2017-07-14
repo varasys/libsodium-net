@@ -3,6 +3,7 @@ solution: libsodium-net.sln
 git:
   depth: 3
 
+env:
 matrix:
   include:
     - dotnet: 1.0.1
@@ -14,6 +15,7 @@ matrix:
       - CFG=CORE
       - TRAVIS_OS_UNAME=$(uname -s)
     - mono: latest
+      dist: trusty
       sudo: required
       os:
       - linux
@@ -22,7 +24,23 @@ matrix:
       - TRAVIS_OS_UNAME=$(uname -s)
     - dotnet: 1.0.1
       mono: none
-      dist: trusty
+      os:
+      - osx
+      env:
+      - CFG=CORE
+      - TRAVIS_OS_UNAME=$(uname -s)
+    - mono: latest
+      sudo: required
+      os:
+      - osx
+      env:
+      - CFG=MONO
+      - TRAVIS_OS_UNAME=$(uname -s)
+  exclude:
+    - env:
+  allow_failures:
+    - dotnet: 1.0.1
+      mono: none
       os:
       - osx
       env:
