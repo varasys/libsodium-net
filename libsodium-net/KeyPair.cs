@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Security.Cryptography;
 using Sodium.Exceptions;
+using Sodium.Interop;
 
 namespace Sodium
 {
@@ -23,7 +24,7 @@ namespace Sodium
       _publicKey = publicKey;
 
       _privateKey = privateKey;
-      _ProtectKey();
+      RuntimeShim.ProtectMemory(_privateKey);
     }
 
     ~KeyPair()
@@ -42,10 +43,10 @@ namespace Sodium
     {
       get
       {
-        _UnprotectKey();
+        RuntimeShim.UnprotectMemory(_privateKey);
         var tmp = new byte[_privateKey.Length];
         Array.Copy(_privateKey, tmp, tmp.Length);
-        _ProtectKey();
+        RuntimeShim.ProtectMemory(_privateKey);
 
         return tmp;
       }
@@ -56,18 +57,6 @@ namespace Sodium
     {
       if (_privateKey != null && _privateKey.Length > 0)
         Array.Clear(_privateKey, 0, _privateKey.Length);
-    }
-
-    private void _ProtectKey()
-    {
-      if (!SodiumLibrary.IsRunningOnMono)
-        ProtectedMemory.Protect(_privateKey, MemoryProtectionScope.SameProcess);
-    }
-
-    private void _UnprotectKey()
-    {
-      if (!SodiumLibrary.IsRunningOnMono)
-        ProtectedMemory.Unprotect(_privateKey, MemoryProtectionScope.SameProcess);
     }
   }
 }

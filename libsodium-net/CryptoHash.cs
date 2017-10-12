@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Sodium.Interop;
 
 namespace Sodium
 {
