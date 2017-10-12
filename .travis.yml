@@ -1,24 +1,65 @@
 language: csharp
-
-mono:
- - 4.4.1
-
-os:
- - osx
- - linux
+solution: libsodium-net.sln
+git:
+  depth: 3
 
 env:
- - TRAVIS_OS_UNAME=$(uname -s)
-
-solution: libsodium-net.sln
+matrix:
+  include:
+    - dotnet: 1.0.1
+      mono: none
+      dist: trusty
+      os:
+      - linux
+      env:
+      - CFG=CORE
+      - TRAVIS_OS_UNAME=$(uname -s)
+    - mono: latest
+      dist: trusty
+      sudo: required
+      os:
+      - linux
+      env:
+      - CFG=MONO
+      - TRAVIS_OS_UNAME=$(uname -s)
+    - dotnet: 1.0.1
+      mono: none
+      os:
+      - osx
+      env:
+      - CFG=CORE
+      - TRAVIS_OS_UNAME=$(uname -s)
+    - mono: latest
+      sudo: required
+      os:
+      - osx
+      env:
+      - CFG=MONO
+      - TRAVIS_OS_UNAME=$(uname -s)
+  exclude:
+    - env:
+  allow_failures:
+    - dotnet: 1.0.1
+      mono: none
+      os:
+      - osx
+      env:
+      - CFG=CORE
+      - TRAVIS_OS_UNAME=$(uname -s)
+    - mono: latest
+      sudo: required
+      os:
+      - osx
+      env:
+      - CFG=MONO
+      - TRAVIS_OS_UNAME=$(uname -s)
 
 install:
- - nuget restore libsodium-net.sln
- - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+ - ./travis/install.sh
 
 before_script:
- - bash travis-build-libsodium.sh
+ - ./travis/build-libsodium.sh
 
 script:
- - xbuild libsodium-net.sln
- - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./Tests/bin/Debug/Tests.dll
+ - ./travis/build.sh
+ - ./travis/test.sh

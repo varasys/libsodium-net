@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using Sodium.Exceptions;
+using Sodium.Interop;
 
 namespace Sodium
 {
@@ -85,7 +86,7 @@ namespace Sodium
 
       //remove the trailing nulls from the array
       var tmp = new byte[cipherLength];
-      Array.Copy(cipher, 0, tmp, 0, cipherLength);
+      RuntimeShim.Copy(cipher, 0, tmp, 0, cipherLength);
 
       return tmp;
     }
@@ -141,7 +142,7 @@ namespace Sodium
 
       //remove the trailing nulls from the array
       var tmp = new byte[messageLength];
-      Array.Copy(message, 0, tmp, 0, messageLength);
+      RuntimeShim.Copy(message, 0, tmp, 0, messageLength);
 
       return tmp;
     }

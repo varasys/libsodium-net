@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Security.Cryptography;
 using System.Text;
 using Sodium.Exceptions;
+using Sodium.Interop;
 
 namespace Sodium
 {
@@ -81,7 +82,7 @@ namespace Sodium
 
       //validate the length of the public key
       if (publicKey == null || publicKey.Length != PublicKeyBytes)
-        throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : secretKey.Length,
+        throw new KeyOutOfRangeException("publicKey", (publicKey == null) ? 0 : publicKey.Length,
           string.Format("key must be {0} bytes in length.", PublicKeyBytes));
 
       //validate the length of the nonce
