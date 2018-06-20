@@ -12,6 +12,8 @@ Crypto is hard - much harder than your average developer understands. This effor
 
 **Windows**: For Windows, the `libsodium` library is included in the [release](https://github.com/adamcaudill/libsodium-net/releases) packages. Or just use the [NuGet version](https://www.nuget.org/packages/libsodium-net/) which has everything you need.
 
+Note that NuGet will also pull in the "Baseclass.Contrib.Nuget.Output" package as a dependancy which will copy the "unmanaged" (native C) dll's to the correct folder when the project is built (so they are available to the libsodium-net wrapper). When a solution has multiple projects it may be necissary to add libsodium-net to the "Startup" project even if libsodium is not used by the "Startup" project (so the unmanaged dlls are copied to the correct location and available to the sub-project).
+
 **OSX**: For OSX, `libsodium-net` can easily be built in Xamarin Studio, and `libsodium` can be installed easily via `brew`:
 
     brew install libsodium --universal
